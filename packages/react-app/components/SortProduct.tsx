@@ -1,4 +1,4 @@
-import { UserContext } from "@/userContext";
+import { UserContext } from "../userContext";
 import { IContextType } from "@/utils/types";
 import { useContext } from "react";
 

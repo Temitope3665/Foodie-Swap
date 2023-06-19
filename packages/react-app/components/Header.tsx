@@ -1,4 +1,4 @@
-import { UserContext } from "@/userContext";
+import { UserContext } from "../userContext";
 import { IContextType } from "@/utils/types";
 import { Disclosure } from "@headlessui/react";
 import { Bars3Icon, XMarkIcon } from "@heroicons/react/24/outline";
@@ -43,7 +43,7 @@ export default function Header() {
                       type="search"
                       placeholder="Search by foodie"
                       className="w-[400px] bg-gray-100 p-2 mt-2 mb-3 rounded-lg text-[14px] outline-forest"
-                      onChange={handleGetUserSearch}
+                      onChange={(e) => handleGetUserSearch(e.target.value)}
                     />
                     
                   </div>

@@ -5,8 +5,8 @@ export const useSearch = () => {
     const [userSearch, setUserSearch] = useState<string>('');
 
     // function that gets called on change of user input and sets to state
-    const handleGetUserSearch = (e: any) => {
-        setUserSearch(e.target.value);
+    const handleGetUserSearch = (value: string) => {
+        setUserSearch(value);
     };
 
     // function that gets called when user filter by
