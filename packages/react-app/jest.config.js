@@ -3,6 +3,7 @@ module.exports = {
   // on node 14.x coverage provider v8 offers good speed and more or less good report
   coverageProvider: 'v8',
   collectCoverageFrom: [
+    // Exclude packages that is dependent on modules
     '**/*.{js,jsx,ts,tsx}',
     '!**/*.d.ts',
     '!**/node_modules/**',
@@ -10,6 +11,8 @@ module.exports = {
     '!<rootDir>/.next/**',
     '!<rootDir>/*.config.js',
     '!<rootDir>/coverage/**',
+    '!**/components/',
+    './components/Header.tsx'
   ],
   moduleNameMapper: {
     // Handle CSS imports (with CSS modules)

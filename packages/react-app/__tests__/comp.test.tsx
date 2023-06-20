@@ -2,11 +2,8 @@ import React from "react";
 import { fireEvent, render, screen } from "@testing-library/react";
 import "@testing-library/jest-dom";
 import Footer from "../components/Footer";
-import Header from "../components/Header";
 import { UserContext } from "../userContext";
 import { SortProduct } from "../components/SortProduct";
-import ProductList from "@/components/ProductList";
-import Layout from "@/components/Layout";
 
 // provider value for the use context
 const providerValue = { 
