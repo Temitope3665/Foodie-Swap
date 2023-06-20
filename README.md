@@ -6,7 +6,6 @@
 [FoodieSwap](https://temitope3665.github.io/Music-Ticket-dApp/)
 <!-- APplication screenhot -->
   ![Application Screenshot](/products.png)
-    <img src="/products.png" align="center" alt="Celo" />
 
 <!-- ABOUT THIS PROJECT -->
 ## Project Description:

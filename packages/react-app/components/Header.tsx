@@ -1,9 +1,9 @@
-import { UserContext } from "@/userContext";
-import { IContextType } from "@/utils/types";
+import { UserContext } from "../userContext";
+import { IContextType } from "../utils/types";
 import { Disclosure } from "@headlessui/react";
 import { Bars3Icon, XMarkIcon } from "@heroicons/react/24/outline";
-import { ConnectButton } from "@rainbow-me/rainbowkit";
 import Image from "next/image";
+import { ConnectButton } from "@rainbow-me/rainbowkit";
 import { useContext } from "react";
 
 export default function Header() {
@@ -43,7 +43,7 @@ export default function Header() {
                       type="search"
                       placeholder="Search by foodie"
                       className="w-[400px] bg-gray-100 p-2 mt-2 mb-3 rounded-lg text-[14px] outline-forest"
-                      onChange={handleGetUserSearch}
+                      onChange={(e) => handleGetUserSearch(e.target.value)}
                     />
                     
                   </div>

@@ -3,9 +3,9 @@
 // Importing the dependencies
 import { useContext, useState } from "react";
 // Import the useContractCall hook to read how many products are in the marketplace via the contract
-import { useContractCall } from "@/hooks/contract/useContractRead";
+import { useContractCall } from "../hooks/contract/useContractRead";
 // Import the Product and Alert components
-import Product from "@/components/Product";
+import Product from "../components/Product";
 import ErrorAlert from "@/components/alerts/ErrorAlert";
 import LoadingAlert from "@/components/alerts/LoadingAlert";
 import SuccessAlert from "@/components/alerts/SuccessAlert";
