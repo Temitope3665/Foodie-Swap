@@ -38,14 +38,13 @@ export default function Header() {
                     </a>
 
                     {/* Search Input */}
-                    <input
-                      required
-                      type="search"
-                      placeholder="Search by foodie"
-                      className="w-[400px] bg-gray-100 p-2 mt-2 mb-3 rounded-lg text-[14px] outline-forest"
-                      onChange={(e) => handleGetUserSearch(e.target.value)}
-                    />
-                    
+                      <input
+                        required
+                        type="search"
+                        placeholder="Search foodie"
+                        className="w-[400px] relative bg-gray-100 p-2 mt-2 mb-3 rounded-lg text-[14px] outline-forest"
+                        onChange={(e) => handleGetUserSearch(e.target.value)}
+                      />
                   </div>
                 </div>
                 <div className="absolute inset-y-0 right-0 flex items-center pr-2 sm:static sm:inset-auto sm:ml-6 sm:pr-0">
