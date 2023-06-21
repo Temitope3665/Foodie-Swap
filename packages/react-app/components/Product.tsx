@@ -21,6 +21,8 @@ import { useContractSend } from "@/hooks/contract/useContractWrite";
 import { useCount } from "@/hooks/useCount";
 import { IContextType } from "@/utils/types";
 import { UserContext } from "@/userContext";
+import { LikeIcon } from "./svgs";
+import useLocalStorage from "@/hooks/useLocalStorage";
 
 // Define the interface for the product, an interface is a type that describes the properties of an object
 interface Product {
@@ -35,6 +37,8 @@ interface Product {
 
 // Define the Product component which takes in the id of the product and some functions to display notifications
 const Product = ({ id, setError, setLoading, clear }: any) => {
+  // store all liked products to a state
+  const [likedProducts, setLikedProducts] = useState([]);
   // call the search stored in the useContext
   const { userSearch } = useContext(UserContext) as IContextType;
   // Use the useAccount hook to store the user's address
@@ -48,6 +52,9 @@ const Product = ({ id, setError, setLoading, clear }: any) => {
   const { count, addCount, subCount } = useCount();
 
   const [product, setProduct] = useState<Product | null>(null);
+
+  // Get useLocalStorage hooks
+  const { setLocalStorage, getLocalStorage } = useLocalStorage();
   // Use the useContractApprove hook to approve the spending of the product's price, for the ERC20 cUSD contract based on the count selected
   const { writeAsync: approve } = useContractApprove(
     count > 0

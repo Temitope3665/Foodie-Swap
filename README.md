@@ -3,7 +3,7 @@
 
 ## Live Demo:
 
-[FoodieSwap](https://temitope3665.github.io/Music-Ticket-dApp/)
+[FoodieSwap](https://foodie-swap-react-app.vercel.app/)
 <!-- APplication screenhot -->
   ![Application Screenshot](/products.png)
 
@@ -19,7 +19,8 @@ This application will allow user to achieve the following:
 5. Sort products from newest to oldest (when the product was created)
 6. User can also sort by top product name
 7. Buy any available product found in the market place.
-8. User can purchase more than one food item
+8. User can purchase more than one food item.
+9. User can filter by their favourites
 
 <!-- TECHNOLOGY USED-->
 ## Technologies Used:
