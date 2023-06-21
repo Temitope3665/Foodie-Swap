@@ -23,6 +23,7 @@ import { IContextType } from "@/utils/types";
 import { UserContext } from "@/userContext";
 import { LikeIcon } from "./svgs";
 import useLocalStorage from "@/hooks/useLocalStorage";
+import { useRouter } from "next/router";
 
 // Define the interface for the product, an interface is a type that describes the properties of an object
 interface Product {
@@ -37,6 +38,8 @@ interface Product {
 
 // Define the Product component which takes in the id of the product and some functions to display notifications
 const Product = ({ id, setError, setLoading, clear }: any) => {
+  // get useRouter
+  const router = useRouter();
   // store all liked products to a state
   const [likedProducts, setLikedProducts] = useState([]);
   // call the search stored in the useContext
@@ -118,6 +121,7 @@ const Product = ({ id, setError, setLoading, clear }: any) => {
         success: "Product purchased successfully",
         error: "Failed to purchase product",
       });
+      router.reload();
       // If there is an error, display the error message
     } catch (e: any) {
       console.log({ e });
