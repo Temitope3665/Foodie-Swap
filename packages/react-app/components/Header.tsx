@@ -7,7 +7,7 @@ import { ConnectButton } from "@rainbow-me/rainbowkit";
 import { useContext } from "react";
 
 export default function Header() {
-  const { handleGetUserSearch } = useContext(UserContext) as IContextType;
+  const { handleGetUserSearch, handleCurrentSort, userSearch } = useContext(UserContext) as IContextType;
     return (
       <Disclosure as="nav" className="bg-forest border-b border-prosperity">
         {({ open }) => (
@@ -43,7 +43,8 @@ export default function Header() {
                         type="search"
                         placeholder="Search foodie"
                         className="w-[400px] relative bg-gray-100 p-2 mt-2 mb-3 rounded-lg text-[14px] outline-forest"
-                        onChange={(e) => handleGetUserSearch(e.target.value)}
+                        onChange={(e) => { handleGetUserSearch(e.target.value); handleCurrentSort('newest') }}
+                        value={userSearch}
                       />
                   </div>
                 </div>

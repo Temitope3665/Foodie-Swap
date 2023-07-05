@@ -156,8 +156,6 @@ const AddProductModal = () => {
     cursor: (!!loading || !isComplete || !createProduct) ? "not-allowed" : 'allowed',
   };
 
-  console.log(!!loading || !isComplete || !createProduct);
-
   // Define the JSX that will be rendered
   return (
     <div className={"flex flex-row w-full justify-between"}>

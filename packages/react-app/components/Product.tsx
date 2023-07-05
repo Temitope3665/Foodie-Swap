@@ -81,6 +81,9 @@ const Product = ({ id, setError, setLoading, clear }: any) => {
     });
   }, [rawProduct]);
 
+  // console.log(rawProduct);
+  
+
   // Call the getFormatProduct function when the rawProduct state changes
   useEffect(() => {
     getFormatProduct();
@@ -154,7 +157,7 @@ const Product = ({ id, setError, setLoading, clear }: any) => {
               "absolute z-10 right-0 mt-4 bg-amber-400 text-black p-1 rounded-l-lg px-4"
             }
           >
-            {product.sold} sold
+             Available
           </span>
           {/* Show the product image */}
           <img
@@ -200,7 +203,7 @@ const Product = ({ id, setError, setLoading, clear }: any) => {
             <div className="flex w-full mt-6 justify-between">
               <div
                 className="text-[24px] rounded-lg border px-8 cursor-pointer"
-                onClick={count === 1 || count === 0 ? undefined : subCount}
+                onClick={count === 0 ? undefined : subCount}
               >
                 -
               </div>
@@ -215,7 +218,8 @@ const Product = ({ id, setError, setLoading, clear }: any) => {
             {/* Buy button that calls the purchaseProduct function on click */}
             <button
               onClick={purchaseProduct}
-              className="mt-4 h-14 w-full border-[1px] border-gray-500 text-black p-2 rounded-lg hover:bg-black hover:text-white"
+              className="mt-4 h-14 w-full border-[1px] border-gray-500 text-black p-2 rounded-lg hover:bg-black hover:text-white disabled:cursor-not-allowed disabled:text-black disabled:bg-gypsum disabled:opacity-50"
+              disabled={count === 0}
             >
               {/* Show the product price in cUSD according to the counts of product */}
               Buy for{" "}
