@@ -4,7 +4,7 @@ import { useContext } from "react";
 
 export const SortProduct = () => {
   // Instantiate the function that updates the state during sorting
-  const { handleCurrentSort, currentSort, handleUserFilter } = useContext(UserContext) as IContextType;
+  const { handleCurrentSort, currentSort, handleUserFilter, handleGetUserSearch } = useContext(UserContext) as IContextType;
 
   return (
     <div className="w-[500px] flex items-center justify-between">
@@ -26,21 +26,21 @@ export const SortProduct = () => {
 
       <p
         className={`rounded-full border text-[#798b83] font-light text-[12px] px-3 py-1.5 cursor-pointer ${currentSort === 'chicken' ? 'border-citrus' : 'border'} `}
-        onClick={() => { handleCurrentSort("chicken"); handleUserFilter('chicken'); }}
+        onClick={() => { handleCurrentSort("chicken"); handleUserFilter('chicken'); handleGetUserSearch('') }}
       >
         Chicken
       </p>
 
       <p
         className={`rounded-full border text-[#798b83] font-light text-[12px] px-3 py-1.5 cursor-pointer ${currentSort === 'bbq' ? 'border-citrus' : 'border'} `}
-        onClick={() => { handleCurrentSort("bbq"); handleUserFilter('bbq'); }}
+        onClick={() => { handleCurrentSort("bbq"); handleUserFilter('bbq'); handleGetUserSearch('') }}
       >
         BBQ
       </p>
 
       <p
         className={`rounded-full border text-[#798b83] font-light text-[12px] px-3 py-1.5 cursor-pointer ${currentSort === 'burger' ? 'border-citrus' : 'border'} `}
-        onClick={() => { handleCurrentSort("burger"); handleUserFilter('burger') }}
+        onClick={() => { handleCurrentSort("burger"); handleUserFilter('burger'); handleGetUserSearch(''); }}
       >
         Burger
       </p>

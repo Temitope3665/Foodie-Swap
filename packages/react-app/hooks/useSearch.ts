@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useContext, useState } from "react";
 
 export const useSearch = () => {
     // Create a state to hold user inputs

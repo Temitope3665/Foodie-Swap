@@ -17,7 +17,6 @@ const ContextProvider = ({ children }: IContextProvider) => {
     setCurrentSort(value);
   }
 
-
   const providerValue = useMemo(
     () => ({  handleGetUserSearch, userSearch, handleCurrentSort, currentSort, handleUserFilter }),
     [ handleGetUserSearch, userSearch, currentSort, handleCurrentSort, handleUserFilter ]
