@@ -86,8 +86,6 @@ const Product = ({ id, setError, setLoading, clear }: any) => {
     getFormatProduct();
   }, [getFormatProduct]);
 
-  // console.log(product);
-
   // Define the handlePurchase function which handles the purchase interaction with the smart contract
   const handlePurchase = async () => {
     if (!approve || !purchase) {
@@ -124,7 +122,6 @@ const Product = ({ id, setError, setLoading, clear }: any) => {
       router.reload();
       // If there is an error, display the error message
     } catch (e: any) {
-      console.log({ e });
       setError(e?.reason || e?.message || "Something went wrong. Try again.");
       // Once the purchase is complete, clear the loading state
     } finally {
@@ -203,7 +200,7 @@ const Product = ({ id, setError, setLoading, clear }: any) => {
             <div className="flex w-full mt-6 justify-between">
               <div
                 className="text-[24px] rounded-lg border px-8 cursor-pointer"
-                onClick={count == 1 ? undefined : subCount}
+                onClick={count === 1 || count === 0 ? undefined : subCount}
               >
                 -
               </div>
