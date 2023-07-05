@@ -14,52 +14,83 @@ import { useDebounce } from "use-debounce";
 import { useContractSend } from "@/hooks/contract/useContractWrite";
 // Import the erc20 contract abi to get the cUSD balance
 import erc20Instance from "../abi/erc20.json";
+import { ErrorText } from "./ErrorText";
+import { uploadImage } from "@/utils/helper";
+import { Loader } from "./svgs";
 
 // The AddProductModal component is used to add a product to the marketplace
 const AddProductModal = () => {
-    // The visible state is used to toggle the modal
-    const [visible, setVisible] = useState(false);
-    // The following states are used to store the values of the form fields
-    const [productName, setProductName] = useState("");
-    const [productPrice, setProductPrice] = useState<string | number>(0);
-    const [productImage, setProductImage] = useState("");
-    const [productDescription, setProductDescription] = useState("");
-    const [productLocation, setProductLocation] = useState("");
-    // The following states are used to store the debounced values of the form fields
-    const [debouncedProductName] = useDebounce(productName, 500);
-    const [debouncedProductPrice] = useDebounce(productPrice || 0, 500);
-    const [debouncedProductImage] = useDebounce(productImage, 500);
-    const [debouncedProductDescription] = useDebounce(productDescription, 500);
-    const [debouncedProductLocation] = useDebounce(productLocation, 500);
-    // The loading state is used to display a loading message
-    const [loading, setLoading] = useState("");
-    // The displayBalance state is used to store the cUSD balance of the user
-    const [displayBalance, setDisplayBalance] = useState(false);
+  // The visible state is used to toggle the modal
+  const [visible, setVisible] = useState(false);
+  // The following states are used to store the values of the form fields
+  const [productName, setProductName] = useState("");
+  const [productPrice, setProductPrice] = useState<string | number>(0);
+  const [productImage, setProductImage] = useState("");
+  const [productDescription, setProductDescription] = useState("");
+  const [productLocation, setProductLocation] = useState("");
 
-    // Check if all the input fields are filled
+  // Set error when input field is incorrect or error occurs
+  const [error, setError] = useState<any>({
+    productName: "",
+    productDesc: "",
+    productLocation: "",
+    productPrice: "",
+    productImage: "",
+  });
+  // The following states are used to store the debounced values of the form fields
+  const [debouncedProductName] = useDebounce(productName, 500);
+  const [debouncedProductPrice] = useDebounce(productPrice || 0, 500);
+  const [debouncedProductImage] = useDebounce(productImage, 500);
+  const [debouncedProductDescription] = useDebounce(productDescription, 500);
+  const [debouncedProductLocation] = useDebounce(productLocation, 500);
+  // The loading state is used to display a loading message
+  const [loading, setLoading] = useState("");
+  // The displayBalance state is used to store the cUSD balance of the user
+  const [displayBalance, setDisplayBalance] = useState(false);
+  // The state that holds image uploading
+  const [isUploading, setIsUploading] = useState<boolean>(false);
+  // The state that holds the link of the image uploaded
+  // const [imageLink, setImageLink] = useState<string>("");
+  // The state that holds the response of the upload
+  const [result, setResult] = useState<{ type: string; message: string }>();
+
+  // Upload image to cloudinary
+  const handleUploadImage = (e: any) => {
+    setIsUploading(true);
+    const formData = new FormData();
+    formData.append("file", e.target.files[0]);
+    formData.append(
+      "upload_preset",
+      `${process.env.NEXT_PUBLIC_CLOUDINARY_PRESET}`
+    );
+    uploadImage(formData, setProductImage, setIsUploading, setResult);
+  };
+
+  // Check if all the input fields are filled
   const isComplete =
-  productName &&
-  productPrice &&
-  productImage &&
-  productLocation &&
-  productDescription;
+    productName &&
+    productPrice &&
+    productImage &&
+    productLocation &&
+    productDescription;
 
-// Clear the input fields after the product is added to the marketplace
-const clearForm = () => {
-  setProductName("");
-  setProductPrice(0);
-  setProductImage("");
-  setProductDescription("");
-  setProductLocation("");
-};
+  // Clear the input fields after the product is added to the marketplace
+  const clearForm = () => {
+    setProductName("");
+    setProductPrice(0);
+    setProductImage("");
+    setProductDescription("");
+    setProductLocation("");
+    setResult({ type: "", message: "" });
+  };
 
-// Convert the product price to wei
-const productPriceInWei = ethers.utils.parseEther(
-  debouncedProductPrice.toString()
-);
+  // Convert the product price to wei
+  const productPriceInWei = ethers.utils.parseEther(
+    debouncedProductPrice.toString()
+  );
 
-// Use the useContractSend hook to use our writeProduct function on the marketplace contract and add a product to the marketplace
-const { writeAsync: createProduct } = useContractSend("writeProduct", [
+  // Use the useContractSend hook to use our writeProduct function on the marketplace contract and add a product to the marketplace
+  const { writeAsync: createProduct } = useContractSend("writeProduct", [
     debouncedProductName,
     debouncedProductImage,
     debouncedProductDescription,
@@ -96,7 +127,6 @@ const { writeAsync: createProduct } = useContractSend("writeProduct", [
       });
       // Display an error message if something goes wrong
     } catch (e: any) {
-      console.log({ e });
       toast.error(e?.message || "Something went wrong. Try again.");
       // Clear the loading state after the product is added to the marketplace
     } finally {
@@ -104,23 +134,31 @@ const { writeAsync: createProduct } = useContractSend("writeProduct", [
     }
   };
 
-    // Get the user's address and balance
-    const { address, isConnected } = useAccount();
-    const { data: cusdBalance } = useBalance({
-      address,
-      token: erc20Instance.address as `0x${string}`,
-    });
-  
-    // If the user is connected and has a balance, display the balance
-    useEffect(() => {
-      if (isConnected && cusdBalance) {
-        setDisplayBalance(true);
-        return;
-      }
-      setDisplayBalance(false);
-    }, [cusdBalance, isConnected]);
+  // Get the user's address and balance
+  const { address, isConnected } = useAccount();
+  const { data: cusdBalance } = useBalance({
+    address,
+    token: erc20Instance.address as `0x${string}`,
+  });
 
-    // Define the JSX that will be rendered
+  // If the user is connected and has a balance, display the balance
+  useEffect(() => {
+    if (isConnected && cusdBalance) {
+      setDisplayBalance(true);
+      return;
+    }
+    setDisplayBalance(false);
+  }, [cusdBalance, isConnected]);
+
+  // Set the disable style
+  const disabled = {
+    opacity: (!!loading || !isComplete || !createProduct) ? 0.5 : '0',
+    cursor: (!!loading || !isComplete || !createProduct) ? "not-allowed" : 'allowed',
+  };
+
+  console.log(!!loading || !isComplete || !createProduct);
+
+  // Define the JSX that will be rendered
   return (
     <div className={"flex flex-row w-full justify-between"}>
       <div>
@@ -162,51 +200,123 @@ const { writeAsync: createProduct } = useContractSend("writeProduct", [
                     <input
                       onChange={(e) => {
                         setProductName(e.target.value);
+                        setTimeout(() => {
+                          e.target.value.length < 2
+                            ? setError({
+                                ...error,
+                                productName: "Enter a valid product name",
+                              })
+                            : setError({ ...error, productName: "" });
+                        }, 1000);
                       }}
                       required
                       type="text"
-                      className="w-full bg-gray-100 p-2 mt-2 mb-3"
+                      className={`w-full bg-gray-100 p-2 mt-2 mb-3 ${
+                        error.productName
+                          ? "focus:outline-error border-error outline-error"
+                          : "focus:outline-success_400 border-[#9DA1A8] outline-success_400"
+                      }`}
                     />
+                    <ErrorText message={error.productName} />
 
                     <label>Product Image (URL)</label>
                     <input
                       onChange={(e) => {
-                        setProductImage(e.target.value);
+                        handleUploadImage(e);
                       }}
                       required
-                      type="text"
+                      type="file"
+                      accept="image/png, image/jpeg"
                       className="w-full bg-gray-100 p-2 mt-2 mb-3"
                     />
+                    {isUploading && (
+                      <div className="-mt-3 flex items-center">
+                        <p className="text-sm text-grey py-2">Uploading...</p>
+                        <div className="ml-4">{Loader}</div>
+                      </div>
+                    )}
+                    {result?.message && (
+                      <p
+                        className={`py-2 ${
+                          result?.type === "success"
+                            ? "text-success_400"
+                            : "text-error"
+                        } -mt-4 text-[12px]`}
+                      >
+                        {result && result?.message}
+                      </p>
+                    )}
 
                     <label>Product Description</label>
                     <input
                       onChange={(e) => {
                         setProductDescription(e.target.value);
+                        setTimeout(() => {
+                          e.target.value.length < 2
+                            ? setError({
+                                ...error,
+                                productDesc:
+                                  "Enter a valid product description",
+                              })
+                            : setError({ ...error, productDesc: "" });
+                        }, 1000);
                       }}
                       required
                       type="text"
-                      className="w-full bg-gray-100 p-2 mt-2 mb-3"
+                      className={`w-full bg-gray-100 p-2 mt-2 mb-3 ${
+                        error.productDesc
+                          ? "focus:outline-error border-error outline-error"
+                          : "focus:outline-success_400 border-[#9DA1A8] outline-success_400"
+                      }`}
                     />
+                    <ErrorText message={error.productDesc} />
 
                     <label>Product Location</label>
                     <input
                       onChange={(e) => {
                         setProductLocation(e.target.value);
+                        setTimeout(() => {
+                          e.target.value.length < 2
+                            ? setError({
+                                ...error,
+                                productLocation: "Enter a valid location",
+                              })
+                            : setError({ ...error, productLocation: "" });
+                        }, 1000);
                       }}
                       required
                       type="text"
-                      className="w-full bg-gray-100 p-2 mt-2 mb-3"
+                      className={`w-full bg-gray-100 p-2 mt-2 mb-3 ${
+                        error.productLocation
+                          ? "focus:outline-error border-error outline-error"
+                          : "focus:outline-success_400 border-[#9DA1A8] outline-success_400"
+                      }`}
                     />
+                    <ErrorText message={error.productLocation} />
 
                     <label>Product Price (cUSD)</label>
                     <input
                       onChange={(e) => {
                         setProductPrice(e.target.value);
+                        setTimeout(() => {
+                          e.target.value === "0"
+                            ? setError({
+                                ...error,
+                                productPrice: "Enter a valid price",
+                              })
+                            : setError({ ...error, productPrice: "" });
+                        }, 1000);
                       }}
                       required
                       type="number"
-                      className="w-full bg-gray-100 p-2 mt-2 mb-3"
+                      min={0}
+                      className={`w-full bg-gray-100 p-2 mt-2 mb-3 ${
+                        error.productLocation
+                          ? "focus:outline-error border-error outline-error"
+                          : "focus:outline-success_400 border-[#9DA1A8] outline-success_400"
+                      }`}
                     />
+                    <ErrorText message={error.productPrice} />
                   </div>
                   {/* Button to close the modal */}
                   <div className="bg-gray-200 px-4 py-3 text-right">
@@ -222,6 +332,7 @@ const { writeAsync: createProduct } = useContractSend("writeProduct", [
                       type="submit"
                       disabled={!!loading || !isComplete || !createProduct}
                       className="py-2 px-4 bg-blue-500 text-white rounded hover:bg-blue-700 mr-2"
+                      style={disabled}
                     >
                       {loading ? loading : "Create"}
                     </button>
