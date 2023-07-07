@@ -330,7 +330,6 @@ const AddProductModal = () => {
                       type="submit"
                       disabled={!!loading || !isComplete || !createProduct}
                       className="py-2 px-4 bg-blue-500 text-white rounded hover:bg-blue-700 mr-2"
-                      style={disabled}
                     >
                       {loading ? loading : "Create"}
                     </button>
