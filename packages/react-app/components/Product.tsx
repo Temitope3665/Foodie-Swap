@@ -207,7 +207,7 @@ const Product = ({ id, setError, setLoading, clear }: any) => {
               >
                 -
               </div>
-              <h1 className="text-[24px]">{count == 0 ? "" : count}</h1>
+              <h1 className="text-[24px]">{count}</h1>
               <div
                 className="text-[24px] rounded-lg border px-8 cursor-pointer hover:bg-gypsum"
                 onClick={addCount}
